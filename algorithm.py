@@ -12,6 +12,9 @@ class Algorithm:
     def are_points_available(self):
         return len(self.available_points) > 0
 
+    def add_distance_to_route(self, distance):
+        self.route_length += distance
+
     def assign_starting_point(self, starting_point_number):
         try:
             self.current_point = self.available_points.pop(starting_point_number)
@@ -32,20 +35,18 @@ class Algorithm:
                 if distance < shortest_distance:
                     shortest_distance = distance
                     nearest_point_idx = index
-                
             
             self.current_point = self.available_points.pop(nearest_point_idx)
             self.already_passed_points.append(self.current_point.id)
-            self.route_length += shortest_distance
+            self.add_distance_to_route(shortest_distance)
             
-        
         self.go_to_starting_point()
         self.print_results()
             
     def go_to_starting_point(self):
         distance = self.get_distance(self.starting_point)
         self.already_passed_points.append(self.starting_point.id)
-        self.route_length += distance
+        self.add_distance_to_route(distance)
 
     def get_distance(self, point):
         return math.sqrt(
